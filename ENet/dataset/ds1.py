@@ -2,7 +2,7 @@ import cv2
 import torch
 
 import config as cf
-import augmentation as aug
+from .augmentation import *
 import os
 from pathlib import Path
 import numpy as np
@@ -23,7 +23,7 @@ class dataset_1(Dataset):
 
         self.imgs = np.load(img_npy_path)
         self.masks = np.load(mask_npy_path)
-        print(self.imgs.shape)
+        # print(self.imgs.shape)
         if isTrain:
             num_train = int(self.imgs.shape[0]*0.8)
             self.imgs = self.imgs[:num_train]
@@ -45,20 +45,20 @@ class dataset_1(Dataset):
         img = np.array(img,dtype=np.float32)
 
         if self.isTrain:
-            img,mask = aug.resize(img,mask)
-            img = aug.randomHSV(img)
-            img,mask = aug.randomHorizontalFlip(img,mask)
-            img,mask = aug.randomVerticalFlip(img,mask)
-            img,mask = aug.normalize(img,mask)
+            img,mask = resize(img,mask)
+            img = randomHSV(img)
+            img,mask = randomHorizontalFlip(img,mask)
+            img,mask = randomVerticalFlip(img,mask)
+            img,mask = normalize(img,mask)
 
         else:
-            img,mask = aug.resize(img,mask)
-            img,mask = aug.normalize(img,mask)
+            img,mask = resize(img,mask)
+            img,mask = normalize(img,mask)
 
-        plt.imshow(img)
-        plt.show()
-        plt.imshow(mask)
-        plt.show()
+        # plt.imshow(img)
+        # plt.show()
+        # plt.imshow(mask)
+        # plt.show()
         img = np.transpose(img,(2,0,1))
         img = torch.from_numpy(img.copy())
         mask = torch.from_numpy(mask.copy()).long()

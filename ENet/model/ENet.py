@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from Components import*
+from .Components import Downsampling,BottleNeck,Upsampling,InitialBlock
 
 class ENet(nn.Module):
     def __init__(self,num_classes):
@@ -94,3 +94,6 @@ class ENet(nn.Module):
         #fullconv
         x = self.fullconv(x)
         return x
+
+if __name__ == '__main__':
+    pass
